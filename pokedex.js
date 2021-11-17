@@ -1,100 +1,64 @@
-// llamo fetch para recger sus datos 
-const basePokemon = 'https://pokeapi.co/api/v2/pokemon/';
+alert('¡ Bienvenid@ !'); // extra de saludo
 
-const pokeBola = document.getElementById('pokedex');
-pokeBola.classList.add('pokedex');
+// const basePokemon = 'https://pokeapi.co/api/v2/pokemon/'; // URL pokemon, almaceno en variable
 
+const pokeBola = document.getElementById('pokedex'); // doy valor a la variable con el elemento del html creado, para que me sirva de cajón
+pokeBola.classList.add('pokedex'); // add clase
 
 // puedo pasar el nombre o el id 
 function askPokemon(id) {
 
-    fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`) // pido desde su url
+    // llamo fetch para recger sus datos 
+    fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`) // pido desde su url y hago que me llame el id que pasa como argumento, pero tb se gana en el loop ffor de líena 22
         .then((pokemonGetApi) => {
-            return pokemonGetApi.json();
+            return pokemonGetApi.json(); // pido datos, y los convierto en json, fácil lectura
         })
         .then((pokemonResults) => {
-            // prompt('cuato quiere2')
-            creaPokemon(pokemonResults);
+            creaPokemon(pokemonResults); // una vez convertidos, paso los datos como argumento a la función que me crea las tarjetas diámicas en DOM
         });
 }
 
-function recorrePokedex(number) {
-    for (let i = 1; i <= number; i++) {
-        // for (let i = 1; i < 151; i++) {
-        askPokemon(i)
+function recorrePokedex(number) { // atrapa el # que le doy en la línea 60
+    // gener Loop, para crear ciertos números de id's para usarlo en urls
+    for (let i = 1; i <= number; i++) { // le paso el argumento para que sea todo práctico, que será un # que paso en línea 60. O el cliente pasa.
+        // for (let i = 1; i < 151; i++) { // es lo mismo que dice en la línea de arriba
+        askPokemon(i) // me llamo a la función donde me obtniene los datos de la api
+
     }
 }
 
 // aquí voy creando las tarjetas donde contendremos a los pokemones 
-function creaPokemon(pokemon) {
+function creaPokemon(pokemon) { // mágica, me crea todo lo del dom desde js
 
-    const card = document.createElement('div');
+    const card = document.createElement('div'); // add new elemento
     card.classList.add('card');
 
     // lo que va a contener la imagen 
-    const spriteContainer = document.createElement('div');
-    spriteContainer.classList.add('img-content');
+    const spriteContainer = document.createElement('div'); // add new elemento
+    spriteContainer.classList.add('img-content'); // add clase
 
-    const sprite = document.createElement('img');
-    sprite.classList.add('card-image')
-    sprite.src = pokemon.sprites['front_default']; // puedo anotar con corchetes o con .fornt_defaul que es como la api le llama a esa imagen en espcifica
+    const sprite = document.createElement('img'); // add new elemento
+    sprite.classList.add('card-image') // add clase
+    sprite.src = pokemon.sprites['front_default']; // puedo anotar con corchetes o con .fornt_defaul que es como la api le llama a esa imagen en espcifica , tengo que llamar con src 
 
     spriteContainer.appendChild(sprite);
 
-    const number = document.createElement('p');
-    number.classList.add('card-subtitle')
+    const number = document.createElement('p'); // add new elemento
+    number.classList.add('card-subtitle') // add clase
     number.textContent = `#${pokemon.id}` // le pongo el # para que me de el número junto al # ex #1  y así
 
-
-    /*    // intento ponerle una caracteristica 
-       const numberw = document.createElement('p');
-       numberw.textContent = `${pokemon} `;
-       // numberw.classList.add('card-subtitle'); */
-
-
-    const name = document.createElement('p');
-    name.classList.add('card-title');
+    const name = document.createElement('p'); // add new elemento
+    name.classList.add('card-title'); // add clase
     name.textContent = pokemon.name;
 
-    card.appendChild(spriteContainer);
-    card.appendChild(number);
-    // card.appendChild(numberw);
-    card.appendChild(name);
 
+    card.appendChild(spriteContainer); //asigno hijos
+    card.appendChild(number); //asigno hijos
+    card.appendChild(name); //asigno hijos
+    pokeBola.appendChild(card); //asigno hijos
 
-    pokeBola.appendChild(card);
 }
+// recorrePokedex(151); // aquí hago llamada del LOop, Y COMIENZA LA MAGIA -- Vittorio, recuerda ponerle el número que quiero como argumento/ parametreo. Manual desde dentro
 
-// "https://pokeapi.co/api/v2/ability/132/
-
-// puedo meterle un prompt que pregunte cuantos pokemones quiere ver , así la hago dinámica ?????????
-// recorrePokedex(i) // me toma como argumento el número 
-recorrePokedex(151);
-
-
-
-
-
-// creo botomn para que me muestre mas items !!! lo dejo de 10 en 10 .... 
-// ponerle clases !!! al boton !!!! y centtrar tb ponerle mas largao y grande 
-/* alert('Bienvenido')
-alert('Cada vez que le des al botón "SHOW ME MORE POKEMONS => te mostrará 10 pokemones')
-
-// NO FUNCIONA BIEN, YA QUE ME REPITE LOS POKEMONES !!!!! 
-const button1 = document.createElement('button');
-button1.textContent = 'Show me more Pokemons! ';
-button1.addEventListener('click', function aparce() {
-
-    recorrePokedex(10)
-})
-document.body.appendChild(button1); */
-
-
-
-// ENLAZA OL ID POKEDEX
-
-// const pokemon = results.map((result) => ({
-//     name: result.name,
-//     image: result.sprites['front_default'],
-//     type: result.types.map((type) => type.type.name).join(', '),
-//     id: result.id
+recorrePokedex(prompt(`Indíca el # de pokemones que deseas obtener.
+                         Pero... Sólo puedes ver un máximo de 800 POKEMONES.`)); // aquí ponemos lo que yo quiero, es que el cliente me diga que cantidad de pokemones quiere VER... él elige el #, no yo. Bien!
